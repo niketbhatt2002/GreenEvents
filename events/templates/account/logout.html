@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Out - GreenEvents{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0" style="border-radius: 20px; overflow: hidden;">
+                <div class="card-body p-5 text-center">
+                    <!-- Icon -->
+                    <div class="mb-4">
+                        <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center"
+                             style="width: 100px; height: 100px; background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); box-shadow: 0 10px 30px rgba(238, 90, 111, 0.3);">
+                            <span style="font-size: 3rem; color: white;">👋</span>
+                        </div>
+                    </div>
+
+                    <!-- Title -->
+                    <h2 class="fw-bold mb-2" style="color: #333;">Sign Out?</h2>
+                    <p class="text-muted mb-4">Are you sure you want to sign out of your account?</p>
+
+                    <!-- Sign Out Form -->
+                    <form method="post" action="{% url 'account_logout' %}">
+                        {% csrf_token %}
+                        {% if redirect_field_value %}
+                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                        {% endif %}
+
+                        <div class="d-grid gap-3 mt-4">
+                            <button type="submit" class="btn btn-lg"
+                                    style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+                                           color: white;
+                                           border: none;
+                                           padding: 14px;
+                                           border-radius: 12px;
+                                           font-weight: 600;
+                                           box-shadow: 0 4px 15px rgba(238, 90, 111, 0.3);
+                                           transition: all 0.3s ease;">
+                                Yes, Sign Me Out
+                            </button>
+
+                            <a href="{% url 'home' %}" class="btn btn-lg btn-outline-secondary"
+                               style="border-radius: 12px;
+                                      padding: 14px;
+                                      font-weight: 600;
+                                      border: 2px solid #e0e0e0;
+                                      transition: all 0.3s ease;">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Back to Home Link -->
+            <div class="text-center mt-4">
+                <a href="{% url 'home' %}" class="text-decoration-none" style="color: #00d084; font-weight: 500;">
+                    ← Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(238, 90, 111, 0.4) !important;
+}
+
+.btn-outline-secondary:hover {
+    background: #f8f9fa;
+    border-color: #00d084 !important;
+    color: #00d084 !important;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-8">
+        {% if event.cover_image %}
+            <img src="{{ event.cover_image.url }}" class="img-fluid rounded mb-4">
+        {% else %}
+            <div class="bg-success text-white text-center p-5 rounded mb-4">
+                <h1>🌱</h1>
+            </div>
+        {% endif %}
+
+        <h1>{{ event.title }}</h1>
+        <span class="badge bg-success mb-3">{{ event.get_category_display }}</span>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5>Description</h5>
+                <p>{{ event.description }}</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h5>Location</h5>
+                <p>{{ event.location }}</p>
+                {% if event.address %}
+                    <p class="text-muted">{{ event.address }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5>Event Details</h5>
+                <p><strong>Date:</strong><br>{{ event.date|date:"F d, Y" }}</p>
+                <p><strong>Time:</strong><br>{{ event.date|date:"g:i A" }}</p>
+                <p><strong>Capacity:</strong><br>{{ event.capacity }} people</p>
+                <p><strong>Available:</strong><br>{{ event.spots_remaining }} spots</p>
+
+                <hr>
+
+                {% if user.is_authenticated %}
+                    {% if user.volunteer_profile %}
+                        {% if is_registered %}
+                            <div class="alert alert-success">You are registered!</div>
+                            <form method="post" action="{% url 'cancel_registration' event.id %}">
+                                {% csrf_token %}
+                                <button class="btn btn-danger w-100">Cancel Registration</button>
+                            </form>
+                        {% else %}
+                            <form method="post" action="{% url 'register_event' event.id %}">
+                                {% csrf_token %}
+                                <button class="btn btn-success w-100">Register Now</button>
+                            </form>
+                        {% endif %}
+                    {% elif user.organizer_profile and event.organizer == user %}
+                        <a href="{% url 'edit_event' event.id %}" class="btn btn-primary w-100 mb-2">Edit</a>
+                        <a href="{% url 'view_registrations' event.id %}" class="btn btn-info w-100">View Registrations</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-success w-100">Login to Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - GreenEvents{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1 class="fade-in">Join the Green Revolution</h1>
+        <p class="fade-in">Discover meaningful eco-friendly events, connect with like-minded volunteers, and make a real impact on our planet's future.</p>
+        <div class="hero-cta">
+            {% if not user.is_authenticated %}
+                <a href="{% url 'signup_choice' %}" class="btn btn-light btn-lg me-3">Get Started</a>
+                <a href="{% url 'about' %}" class="btn btn-outline-light btn-lg">Learn More</a>
+            {% else %}
+                <a href="#events" class="btn btn-light btn-lg">Browse Events</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<div class="container">
+
+    <!-- Welcome Message for Logged-in Users -->
+    {% if user.is_authenticated %}
+    <div class="alert alert-success fade-in mb-5" style="border-radius: 1rem;">
+        <div class="d-flex align-items-center">
+            <div class="me-3" style="font-size: 2rem;">👋</div>
+            <div>
+                <strong>Welcome back, {{ user.first_name|default:user.username }}!</strong><br>
+                <small>You've visited <strong> {{ visit_count }} </strong> time(s) today. Ready to make a difference?</small>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Search Section -->
+    <div class="search-card fade-in" id="search">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold mb-2">Find Your Perfect Event</h2>
+            <p class="text-muted">Search from hundreds of eco-friendly initiatives happening near you</p>
+        </div>
+
+        <form method="get" action="{% url 'home' %}">
+            <div class="row g-4">
+                <div class="col-md-5">
+                    <label class="form-label">🔍 Search Keywords</label>
+                    <input type="text"
+                           name="query"
+                           class="form-control"
+                           placeholder="Try 'tree planting' or 'ocean cleanup'..."
+                           value="{{ request.GET.query }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">📂 Category</label>
+                    <select name="category" class="form-select">
+                        <option value="">All Categories</option>
+                        <option value="tree_planting" {% if request.GET.category == 'tree_planting' %}selected{% endif %}>🌳 Tree Planting</option>
+                        <option value="beach_cleanup" {% if request.GET.category == 'beach_cleanup' %}selected{% endif %}>🏖️ Beach Cleanup</option>
+                        <option value="recycling" {% if request.GET.category == 'recycling' %}selected{% endif %}>♻️ Recycling Drive</option>
+                        <option value="e_waste" {% if request.GET.category == 'e_waste' %}selected{% endif %}>💻 E-Waste Collection</option>
+                        <option value="community_garden" {% if request.GET.category == 'community_garden' %}selected{% endif %}>🌱 Community Garden</option>
+                        <option value="workshop" {% if request.GET.category == 'workshop' %}selected{% endif %}>📚 Workshop</option>
+                        <option value="conservation" {% if request.GET.category == 'conservation' %}selected{% endif %}>🦋 Conservation</option>
+                        <option value="cleanup" {% if request.GET.category == 'cleanup' %}selected{% endif %}>🧹 Cleanup</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="submit" class="btn btn-success w-100" style="height: 50px;">
+                        Search Events
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Events Section -->
+    <div id="events" style="scroll-margin-top: 100px;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold mb-1">Upcoming Green Events</h2>
+                <p class="text-muted mb-0">Join thousands of volunteers making a difference</p>
+            </div>
+            {% if events %}
+                <span class="badge bg-success" style="font-size: 1rem;">{{ events.paginator.count }} Event{{ events.paginator.count|pluralize }}</span>
+            {% endif %}
+        </div>
+
+        {% if events %}
+            <div class="event-grid">
+                {% for event in events %}
+                <div class="card fade-in">
+                    <!-- Event Image with Unsplash placeholders -->
+                    {% if event.cover_image %}
+                        <img src="{{ event.cover_image.url }}" class="card-img-top" alt="{{ event.title }}">
+                    {% else %}
+                        {% if event.category == 'tree_planting' %}
+                            <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=500&h=280&fit=crop" class="card-img-top" alt="Tree Planting">
+                        {% elif event.category == 'beach_cleanup' %}
+                            <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=500&h=280&fit=crop" class="card-img-top" alt="Beach Cleanup">
+                        {% elif event.category == 'recycling' %}
+                            <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=500&h=280&fit=crop" class="card-img-top" alt="Recycling">
+                        {% elif event.category == 'e_waste' %}
+                            <img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=500&h=280&fit=crop" class="card-img-top" alt="E-Waste">
+                        {% elif event.category == 'community_garden' %}
+                            <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=500&h=280&fit=crop" class="card-img-top" alt="Community Garden">
+                        {% elif event.category == 'workshop' %}
+                            <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500&h=280&fit=crop" class="card-img-top" alt="Workshop">
+                        {% elif event.category == 'conservation' %}
+                            <img src="https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f?w=500&h=280&fit=crop" class="card-img-top" alt="Conservation">
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=500&h=280&fit=crop" class="card-img-top" alt="Green Event">
+                        {% endif %}
+                    {% endif %}
+
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <span class="badge bg-success">{{ event.get_category_display }}</span>
+                        </div>
+
+                        <h5 class="card-title">{{ event.title }}</h5>
+                        <p class="card-text">{{ event.description|truncatewords:22 }}</p>
+
+                        <div class="mt-3" style="font-size: 0.9rem;">
+                            <div class="mb-2">
+                                <strong>📍</strong> {{ event.location }}
+                            </div>
+                            <div class="mb-2">
+                                <strong>📅</strong> {{ event.date|date:"M d, Y" }} at {{ event.date|date:"g:i A" }}
+                            </div>
+                            <div>
+                                <strong>👥</strong>
+                                {% if event.spots_remaining > 0 %}
+                                    <span style="color: #00d084;">{{ event.spots_remaining }} spot{{ event.spots_remaining|pluralize }} left</span>
+                                {% else %}
+                                    <span style="color: #ef4444;">Event Full</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-0 p-3 pt-0">
+                        <a href="{% url 'event_detail' event.id %}" class="btn btn-outline-success w-100">
+                            View Details →
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if events.has_other_pages %}
+            <div class="row mt-5">
+                <div class="col-12">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+
+                            <!-- Previous Button -->
+                            {% if events.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ events.previous_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                    &laquo; Previous
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&laquo; Previous</span>
+                            </li>
+                            {% endif %}
+
+                            <!-- Page Numbers -->
+                            {% for num in events.paginator.page_range %}
+                                {% if events.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% elif num > events.number|add:'-3' and num < events.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ num }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                            {{ num }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            <!-- Next Button -->
+                            {% if events.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ events.next_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                    Next &raquo;
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Next &raquo;</span>
+                            </li>
+                            {% endif %}
+
+                        </ul>
+                    </nav>
+
+                    <!-- Page Info -->
+                    <p class="text-center text-muted mt-3">
+                        <small>Page {{ events.number }} of {{ events.paginator.num_pages }} | Showing {{ events.start_index }}-{{ events.end_index }} of {{ events.paginator.count }} events</small>
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+
+        {% else %}
+            <!-- No Events Found -->
+            <div class="text-center py-5">
+                <div style="font-size: 5rem; opacity: 0.5;">🔍</div>
+                <h3 class="fw-bold mt-4 mb-3">No Events Found</h3>
+                <p class="text-muted mb-4">We couldn't find any events matching your search criteria.<br>Try adjusting your filters or check back later!</p>
+                <a href="{% url 'home' %}" class="btn btn-success">Clear Filters</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Call to Action (if not logged in) -->
+    {% if not user.is_authenticated %}
+    <div class="card mt-5 mb-5" style="background: linear-gradient(135deg, #00d084, #00a66c); border: none; border-radius: 1.5rem; overflow: hidden;">
+        <div class="card-body text-white text-center p-5">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">🌍</div>
+            <h2 class="fw-bold mb-3">Ready to Make a Difference?</h2>
+            <p class="lead mb-4" style="max-width: 600px; margin: 0 auto;">
+                Join thousands of volunteers already making an impact. Sign up today and start your journey toward a greener planet.
+            </p>
+            <a href="{% url 'signup_choice' %}" class="btn btn-light btn-lg px-5">
+                Join GreenEvents →
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Stats Section -->
+    <div class="row g-4 mb-5 mt-5">
+        <div class="col-md-4">
+            <div class="card text-center" style="background: linear-gradient(135deg, #e6fff7, #d1fae5);">
+                <div class="card-body p-4">
+                    <div style="font-size: 3rem;">🌳</div>
+                    <h3 class="fw-bold text-gradient">10,000+</h3>
+                    <p class="text-muted mb-0">Trees Planted</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center" style="background: linear-gradient(135deg, #e6fff7, #d1fae5);">
+                <div class="card-body p-4">
+                    <div style="font-size: 3rem;">👥</div>
+                    <h3 class="fw-bold text-gradient">5,000+</h3>
+                    <p class="text-muted mb-0">Active Volunteers</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center" style="background: linear-gradient(135deg, #e6fff7, #d1fae5);">
+                <div class="card-body p-4">
+                    <div style="font-size: 3rem;">🏖️</div>
+                    <h3 class="fw-bold text-gradient">500+</h3>
+                    <p class="text-muted mb-0">Beaches Cleaned</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Custom Pagination Styling -->
+<style>
+.pagination .page-link {
+    color: #00d084;
+    border: 1px solid #dee2e6;
+    margin: 0 2px;
+    border-radius: 0.375rem;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #00d084;
+    border-color: #00d084;
+    color: white;
+}
+
+.pagination .page-link:hover {
+    color: #00a86b;
+    background-color: #e8f5e9;
+    border-color: #00d084;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+</style>
+
+{% endblock %}

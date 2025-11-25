@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - GreenEvents{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-3 py-3" style="max-width: 1200px;">
+    <!-- Ultra Compact Header -->
+    <div class="d-flex align-items-center justify-content-between p-2 mb-2 rounded shadow-sm"
+         style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);">
+        <div class="d-flex align-items-center gap-2">
+            {% if profile.logo %}
+                <img src="{{ profile.logo.url }}" class="rounded-circle" style="width: 45px; height: 45px; object-fit: cover;">
+            {% else %}
+                <div class="rounded-circle bg-white d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                    <i class="bi bi-building" style="color: #007bff;"></i>
+                </div>
+            {% endif %}
+            <div class="text-white">
+                <div class="fw-bold">{{ profile.organization_name }}</div>
+                <small>📅 {{ total_events }} Events • 👥 {{ total_registrations }} Volunteers</small>
+            </div>
+        </div>
+        <div>
+            <a href="{% url 'create_event' %}" class="btn btn-success btn-sm me-1">+ New</a>
+            <a href="{% url 'edit_organizer_profile' %}" class="btn btn-light btn-sm">Edit</a>
+        </div>
+    </div>
+
+    <div class="row g-2">
+        <!-- Left: Stats & Events -->
+        <div class="col-lg-9">
+            <!-- Inline Stats -->
+            <div class="d-flex gap-2 mb-2">
+                <div class="flex-fill text-center p-2 rounded shadow-sm" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                    <h4 class="mb-0 text-white fw-bold">{{ total_events }}</h4>
+                    <small class="text-white">Events</small>
+                </div>
+                <div class="flex-fill text-center p-2 rounded shadow-sm" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                    <h4 class="mb-0 text-white fw-bold">{{ total_registrations }}</h4>
+                    <small class="text-white">Signups</small>
+                </div>
+                <div class="flex-fill text-center p-2 rounded shadow-sm" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                    <h4 class="mb-0 text-white fw-bold">{{ upcoming_events }}</h4>
+                    <small class="text-white">Upcoming</small>
+                </div>
+                <div class="flex-fill text-center p-2 rounded shadow-sm" style="background: linear-gradient(135deg, #fa709a, #fee140);">
+                    <h4 class="mb-0 text-white fw-bold">{{ past_events }}</h4>
+                    <small class="text-white">Done</small>
+                </div>
+            </div>
+
+            <!-- Events Grid - Super Compact -->
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0"><i class="bi bi-calendar"></i> My Events</h6>
+                        <a href="{% url 'create_event' %}" class="btn btn-success btn-sm py-0 px-2">+ New</a>
+                    </div>
+                    {% if events %}
+                        <div class="row g-2">
+                            {% for event in events|slice:":4" %}
+                            <div class="col-md-6">
+                                <div class="border rounded p-2" style="font-size: 0.85rem;">
+                                    <div class="fw-bold text-truncate mb-1">
+                                        <a href="{% url 'event_detail' event.id %}" class="text-decoration-none text-dark">{{ event.title }}</a>
+                                    </div>
+                                    <div class="small text-muted mb-1">
+                                        📅 {{ event.date|date:"M d" }} • 📍 {{ event.location|truncatewords:2 }}
+                                    </div>
+                                    {% widthratio event.registration_count event.capacity 100 as pct %}
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <small>{{ event.registration_count }}/{{ event.capacity }}</small>
+                                        <span class="badge {% if pct >= 100 %}bg-danger{% elif pct >= 80 %}bg-warning{% else %}bg-success{% endif %}" style="font-size: 0.7rem;">{{ pct }}%</span>
+                                    </div>
+                                    <div class="progress mb-1" style="height: 3px;">
+                                        <div class="progress-bar {% if pct >= 100 %}bg-danger{% elif pct >= 80 %}bg-warning{% else %}bg-success{% endif %}" style="width: {{ pct }}%;"></div>
+                                    </div>
+                                    <div class="d-flex gap-1">
+                                        <a href="{% url 'view_registrations' event.id %}" class="btn btn-sm btn-outline-primary py-0 px-2 flex-fill" style="font-size: 0.7rem;">📋 List</a>
+                                        <a href="{% url 'edit_event' event.id %}" class="btn btn-sm btn-outline-warning py-0 px-2 flex-fill" style="font-size: 0.7rem;">✏️ Edit</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% if events.count > 4 %}
+                        <div class="text-center mt-2">
+                            <small class="text-muted">Showing 4 of {{ events.count }}</small>
+                        </div>
+                        {% endif %}
+                    {% else %}
+                        <p class="text-muted text-center mb-0 py-3">No events yet</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Summary & Actions -->
+        <div class="col-lg-3">
+            <!-- Mini Summary -->
+            <div class="card shadow-sm border-0 mb-2">
+                <div class="card-body p-2">
+                    <h6 class="mb-2"><i class="bi bi-star text-warning"></i> Summary</h6>
+                    <div class="row g-1 text-center small">
+                        <div class="col-6">
+                            <div class="p-2 rounded" style="background: #e8f5e9;">
+                                <div class="fw-bold text-success">{{ total_events }}</div>
+                                <small class="text-muted" style="font-size: 0.7rem;">Events</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 rounded" style="background: #e3f2fd;">
+                                <div class="fw-bold text-primary">{{ total_registrations }}</div>
+                                <small class="text-muted" style="font-size: 0.7rem;">Volunteers</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 rounded" style="background: #fff3e0;">
+                                <div class="fw-bold text-warning">{{ upcoming_events }}</div>
+                                <small class="text-muted" style="font-size: 0.7rem;">Upcoming</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 rounded" style="background: #fce4ec;">
+                                <div class="fw-bold text-danger">{{ past_events }}</div>
+                                <small class="text-muted" style="font-size: 0.7rem;">Completed</small>
+                            </div>
+                        </div>
+                        {% if total_events > 0 %}
+                        <div class="col-12 mt-1">
+                            <div class="p-2 rounded" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                                <div class="fw-bold text-white">{% widthratio total_registrations total_events 1 %}</div>
+                                <small class="text-white" style="font-size: 0.7rem;">Avg. per Event</small>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-2">
+                    <h6 class="mb-2"><i class="bi bi-lightning text-warning"></i> Quick</h6>
+                    <div class="d-grid gap-1">
+                        <a href="{% url 'create_event' %}" class="btn btn-success btn-sm py-1">+ Create Event</a>
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-sm py-1">View Site</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card { border-radius: 8px; }
+</style>
+{% endblock %}

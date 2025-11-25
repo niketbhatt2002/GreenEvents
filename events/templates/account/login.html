@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+
+{% block title %}Login - GreenEvents{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0" style="border-radius: 20px; overflow: hidden;">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold mb-2" style="color: #00d084;">🌱 Welcome Back!</h2>
+                        <p class="text-muted">Login to continue your green journey</p>
+                    </div>
+
+                    <!-- Google Login Button -->
+                    <div class="d-grid gap-2 mb-4">
+                        <a href="{% provider_login_url 'google' %}"
+                           class="btn btn-lg"
+                           style="background: white; border: 2px solid #e0e0e0; color: #444; font-weight: 500; padding: 12px; border-radius: 10px; transition: all 0.3s;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" style="margin-right: 12px; vertical-align: middle;">
+                                <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+                                <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+                                <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+                                <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+                            </svg>
+                            Continue with Google
+                        </a>
+                    </div>
+
+                    <div class="text-center mb-4" style="position: relative;">
+                        <hr style="border-top: 1px solid #e0e0e0;">
+                        <span style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: white; padding: 0 20px; color: #999; font-size: 14px; font-weight: 500;">OR</span>
+                    </div>
+
+                    <!-- Display form errors -->
+                    {% if form.errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Oops!</strong> Please correct the errors below.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endif %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endif %}
+
+                    <!-- Traditional Login Form -->
+                    <form method="post" action="{% url 'account_login' %}">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" style="color: #444;">Username or Email</label>
+                            <input type="text"
+                                   name="login"
+                                   class="form-control form-control-lg"
+                                   placeholder="Enter your username or email"
+                                   style="border-radius: 10px; border: 2px solid #e0e0e0; padding: 12px 20px;"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" style="color: #444;">Password</label>
+                            <input type="password"
+                                   name="password"
+                                   class="form-control form-control-lg"
+                                   placeholder="Enter your password"
+                                   style="border-radius: 10px; border: 2px solid #e0e0e0; padding: 12px 20px;"
+                                   required>
+                        </div>
+
+                        <div class="mb-4 d-flex justify-content-between align-items-center">
+                            <div class="form-check">
+                                <input type="checkbox" name="remember" class="form-check-input" id="remember">
+                                <label class="form-check-label" for="remember" style="color: #666; font-size: 14px;">
+                                    Remember me
+                                </label>
+                            </div>
+                            <a href="{% url 'account_reset_password' %}"
+                               class="text-decoration-none"
+                               style="color: #00d084; font-size: 14px; font-weight: 500;">
+                                Forgot password?
+                            </a>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit"
+                                    class="btn btn-lg"
+                                    style="background: linear-gradient(135deg, #00d084 0%, #00a86b 100%); color: white; font-weight: 600; padding: 12px; border-radius: 10px; border: none; box-shadow: 0 4px 15px rgba(0, 208, 132, 0.3); transition: all 0.3s;">
+                                Login
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <p class="text-muted mb-2" style="font-size: 14px;">Don't have an account?</p>
+                        <a href="{% url 'signup_choice' %}"
+                           class="btn btn-outline-success"
+                           style="border-radius: 10px; padding: 10px 30px; font-weight: 600; border-width: 2px;">
+                            Create Account
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trust badges -->
+            <div class="text-center mt-4">
+                <p class="text-muted small mb-2">🔒 Secure login • 🌍 Join 10,000+ eco-warriors</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.form-control:focus {
+    border-color: #00d084 !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 208, 132, 0.25) !important;
+}
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .card-body {
+        padding: 2rem !important;
+    }
+}
+</style>
+{% endblock %}

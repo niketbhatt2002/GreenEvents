@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="mb-4">
+    <a href="{% url 'organizer_dashboard' %}" class="btn btn-secondary">← Back to Dashboard</a>
+</div>
+
+<div class="card">
+    <div class="card-header bg-info text-white">
+        <h4>📋 Registrations for: {{ event.title }}</h4>
+        <p class="mb-0">Total Registered: {{ registrations.count }} / {{ event.capacity }}</p>
+    </div>
+    <div class="card-body">
+        {% if registrations %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Volunteer Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Registered On</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for registration in registrations %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                {{ registration.volunteer.first_name }} {{ registration.volunteer.last_name }}
+                                <br><small class="text-muted">@{{ registration.volunteer.username }}</small>
+                            </td>
+                            <td>{{ registration.volunteer.email }}</td>
+                            <td>
+                                <span class="badge bg-{{ registration.status == 'confirmed' and 'success' or 'warning' }}">
+                                    {{ registration.get_status_display }}
+                                </span>
+                            </td>
+                            <td>{{ registration.registered_at|date:"M d, Y g:i A" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-muted text-center">No registrations yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

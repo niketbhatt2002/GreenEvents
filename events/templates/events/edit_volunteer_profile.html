@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Profile - GreenEvents{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-header">
+            <div class="form-icon">✏️</div>
+            <h2>Edit Your Profile</h2>
+            <p>Update your volunteer information</p>
+        </div>
+
+        <!-- Current Profile Picture -->
+        {% if profile.profile_picture %}
+        <div class="text-center mb-4">
+            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="image-preview">
+            <p class="text-muted mt-2">Current Profile Picture</p>
+        </div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="id_profile_picture">Profile Picture</label>
+                <div class="image-upload-container">
+                    <p class="mb-2">📸 Upload a new profile picture</p>
+                    {{ form.profile_picture }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_bio">Bio</label>
+                {{ form.bio }}
+                <small class="form-text">Tell us about yourself and your passion for the environment</small>
+            </div>
+
+            <div class="form-group">
+                <label for="id_interests">Interests</label>
+                {{ form.interests }}
+                <small class="form-text">e.g., Tree Planting, Beach Cleanup, Recycling</small>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_phone">Phone</label>
+                    {{ form.phone }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_city">City</label>
+                    {{ form.city }}
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">Save Changes</button>
+                <a href="{% url 'my_profile' %}" class="btn btn-outline-secondary mt-2">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

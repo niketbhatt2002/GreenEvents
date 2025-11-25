@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - GreenEvents{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-3 py-3" style="max-width: 1200px;">
+    <!-- Ultra Compact Header -->
+    <div class="d-flex align-items-center justify-content-between p-2 mb-2 rounded shadow-sm"
+         style="background: linear-gradient(135deg, #00d084 0%, #00a86b 100%);">
+        <div class="d-flex align-items-center gap-2">
+            {% if profile.profile_picture %}
+                <img src="{{ profile.profile_picture.url }}" class="rounded-circle" style="width: 45px; height: 45px; object-fit: cover;">
+            {% else %}
+                <div class="rounded-circle bg-white d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                    <i class="bi bi-person-fill" style="color: #00d084;"></i>
+                </div>
+            {% endif %}
+            <div class="text-white">
+                <div class="fw-bold">{{ user.first_name|default:user.username }}</div>
+                <small>🏆 #{{ leaderboard_rank }} • 🔥 {{ streak_days }}d • ⭐ {{ total_points }}</small>
+            </div>
+        </div>
+        <a href="{% url 'edit_volunteer_profile' %}" class="btn btn-light btn-sm">Edit</a>
+    </div>
+
+    <div class="row g-2">
+        <!-- Left: Stats & Events -->
+        <div class="col-lg-9">
+            <!-- Inline Stats -->
+            <div class="d-flex gap-2 mb-2">
+                <div class="flex-fill text-center p-2 rounded shadow-sm" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                    <h4 class="mb-0 text-white fw-bold">{{ total_events_registered }}</h4>
+                    <small class="text-white">Total</small>
+                </div>
+                <div class="flex-fill text-center p-2 rounded shadow-sm" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                    <h4 class="mb-0 text-white fw-bold">{{ upcoming_events }}</h4>
+                    <small class="text-white">Upcoming</small>
+                </div>
+                <div class="flex-fill text-center p-2 rounded shadow-sm" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                    <h4 class="mb-0 text-white fw-bold">{{ past_events }}</h4>
+                    <small class="text-white">Completed</small>
+                </div>
+                <div class="flex-fill text-center p-2 rounded shadow-sm" style="background: linear-gradient(135deg, #fa709a, #fee140);">
+                    <h4 class="mb-0 text-white fw-bold">{{ achievement_level }}</h4>
+                    <small class="text-white">Level</small>
+                </div>
+            </div>
+
+            <!-- Events Table - Super Compact -->
+            <div class="card shadow-sm border-0 mb-2">
+                <div class="card-body p-2">
+                    <h6 class="mb-2"><i class="bi bi-calendar"></i> My Events</h6>
+                    {% if registrations %}
+                        <div style="max-height: 180px; overflow-y: auto;">
+                            <table class="table table-sm table-hover mb-0" style="font-size: 0.85rem;">
+                                <tbody>
+                                    {% for reg in registrations|slice:":5" %}
+                                    <tr>
+                                        <td class="text-truncate" style="max-width: 250px;">
+                                            <a href="{% url 'event_detail' reg.event.id %}" class="text-decoration-none">{{ reg.event.title }}</a>
+                                        </td>
+                                        <td style="white-space: nowrap;">{{ reg.event.date|date:"M d" }}</td>
+                                        <td>{% if reg.status == 'confirmed' %}<span class="badge bg-success">✓</span>{% else %}<span class="badge bg-warning">⏱</span>{% endif %}</td>
+                                        <td><a href="{% url 'cancel_registration' reg.event.id %}" class="text-danger" onclick="return confirm('Cancel?')"><i class="bi bi-x"></i></a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted text-center mb-0 py-2 small">No events</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Impact & Top 3 - Side by Side -->
+            <div class="row g-2">
+                <div class="col-6">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-2">
+                            <h6 class="mb-2"><i class="bi bi-globe text-success"></i> Impact</h6>
+                            <div class="d-flex justify-content-between text-center small">
+                                <div>
+                                    <div class="fw-bold">{{ trees_planted }}</div>
+                                    <small class="text-muted">🌳</small>
+                                </div>
+                                <div>
+                                    <div class="fw-bold">{{ co2_saved }}</div>
+                                    <small class="text-muted">☁️</small>
+                                </div>
+                                <div>
+                                    <div class="fw-bold">{{ waste_collected }}</div>
+                                    <small class="text-muted">♻️</small>
+                                </div>
+                                <div>
+                                    <div class="fw-bold">{{ hours_volunteered }}</div>
+                                    <small class="text-muted">⏰</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-2">
+                            <h6 class="mb-2"><i class="bi bi-trophy text-warning"></i> Top 3</h6>
+                            <div class="small">
+                                {% for leader in leaderboard|slice:":3" %}
+                                <div class="d-flex justify-content-between mb-1 {% if leader.user == user %}bg-light rounded px-1{% endif %}">
+                                    <span>{% if forloop.counter == 1 %}🥇{% elif forloop.counter == 2 %}🥈{% else %}🥉{% endif %} {{ leader.user.first_name }}</span>
+                                    <span class="badge bg-light text-dark">{{ leader.total_events_attended }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Achievements -->
+        <div class="col-lg-3">
+            <div class="card shadow-sm border-0 mb-2">
+                <div class="card-body p-2">
+                    <h6 class="mb-2"><i class="bi bi-award text-warning"></i> Badges</h6>
+                    <div class="row g-1">
+                        {% if past_events >= 1 %}
+                        <div class="col-6 text-center">
+                            <div class="p-2 rounded" style="background: linear-gradient(135deg, #667eea, #764ba2); font-size: 1.5rem;">🌱</div>
+                            <small class="d-block" style="font-size: 0.7rem;">First</small>
+                        </div>
+                        {% endif %}
+                        {% if past_events >= 5 %}
+                        <div class="col-6 text-center">
+                            <div class="p-2 rounded" style="background: linear-gradient(135deg, #f093fb, #f5576c); font-size: 1.5rem;">🌿</div>
+                            <small class="d-block" style="font-size: 0.7rem;">5 Events</small>
+                        </div>
+                        {% endif %}
+                        {% if past_events >= 10 %}
+                        <div class="col-6 text-center">
+                            <div class="p-2 rounded" style="background: linear-gradient(135deg, #4facfe, #00f2fe); font-size: 1.5rem;">🌳</div>
+                            <small class="d-block" style="font-size: 0.7rem;">10 Events</small>
+                        </div>
+                        {% endif %}
+                        {% if streak_days >= 7 %}
+                        <div class="col-6 text-center">
+                            <div class="p-2 rounded" style="background: linear-gradient(135deg, #fa709a, #fee140); font-size: 1.5rem;">🔥</div>
+                            <small class="d-block" style="font-size: 0.7rem;">Streak</small>
+                        </div>
+                        {% endif %}
+                        {% if past_events < 1 %}
+                        <div class="col-12 text-center py-3">
+                            <small class="text-muted">Complete events to unlock!</small>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-2">
+                    <h6 class="mb-2"><i class="bi bi-lightning text-warning"></i> Quick</h6>
+                    <div class="d-grid gap-1">
+                        <a href="{% url 'home' %}" class="btn btn-success btn-sm py-1">Browse Events</a>
+                        <a href="{% url 'edit_volunteer_profile' %}" class="btn btn-outline-primary btn-sm py-1">Edit Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card { border-radius: 8px; }
+.table td, .table th { padding: 0.3rem; }
+</style>
+{% endblock %}

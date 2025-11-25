@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Organization Profile - GreenEvents{% endblock %}
+
+{% block content %}
+
+<div class="container" style="max-width: 800px; margin-top: 3rem;">
+    <div class="form-card">
+        <div class="form-header">
+            <div class="form-icon">🏢</div>
+            <h2>Edit Organization Profile</h2>
+            <p>Update your organization information</p>
+        </div>
+
+        <!-- Current Logo -->
+        {% if profile.logo %}
+        <div class="text-center mb-4">
+            <img src="{{ profile.logo.url }}" alt="Organization Logo" class="image-preview">
+            <p class="text-muted mt-2">Current Logo</p>
+        </div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="id_logo">Organization Logo</label>
+                <div class="image-upload-container">
+                    <p class="mb-2">🏢 Upload a new logo</p>
+                    {{ form.logo }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_organization_name">Organization Name *</label>
+                {{ form.organization_name }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_organization_type">Organization Type</label>
+                {{ form.organization_type }}
+                <small class="form-text">e.g., Non-Profit, Community Group, School</small>
+            </div>
+
+            <div class="form-group">
+                <label for="id_description">Description</label>
+                {{ form.description }}
+                <small class="form-text">Describe your organization's mission</small>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_website">Website</label>
+                    {{ form.website }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_phone">Phone</label>
+                    {{ form.phone }}
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a href="{% url 'my_profile' %}" class="btn btn-outline-secondary mt-2">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Choose Account Type - GreenEvents{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3">Welcome, {{ user.first_name }}! 🎉</h1>
+        <p class="lead text-muted">You're signed in with Google. Now choose your role:</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+        <!-- Volunteer Card -->
+        <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-lg hover-card" style="border-radius: 20px; overflow: hidden; transition: all 0.3s;">
+                <div class="card-body text-center p-5">
+                    <div class="mb-4">
+                        <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #00d084 0%, #00a86b 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 10px 30px rgba(0, 208, 132, 0.3);">
+                            <span style="font-size: 3rem;">👥</span>
+                        </div>
+                    </div>
+
+                    <h3 class="card-title mb-3 fw-bold" style="color: #333;">I'm a Volunteer</h3>
+                    <p class="text-muted mb-4" style="font-size: 15px; line-height: 1.6;">
+                        Join eco-friendly events and make a difference in your community.
+                    </p>
+
+                    <ul class="list-unstyled text-start mb-4" style="font-size: 14px;">
+                        <li class="mb-3 d-flex align-items-start">
+                            <span style="color: #00d084; font-size: 20px; margin-right: 10px;">✓</span>
+                            <span style="color: #666;">Browse and join events</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <span style="color: #00d084; font-size: 20px; margin-right: 10px;">✓</span>
+                            <span style="color: #666;">Track your contributions</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <span style="color: #00d084; font-size: 20px; margin-right: 10px;">✓</span>
+                            <span style="color: #666;">Earn volunteer badges</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <span style="color: #00d084; font-size: 20px; margin-right: 10px;">✓</span>
+                            <span style="color: #666;">Connect with community</span>
+                        </li>
+                    </ul>
+
+                    <a href="{% url 'volunteer_google_signup' %}"
+                       class="btn btn-lg w-100"
+                       style="background: linear-gradient(135deg, #00d084 0%, #00a86b 100%); color: white; font-weight: 600; padding: 14px; border-radius: 12px; border: none; box-shadow: 0 6px 20px rgba(0, 208, 132, 0.4); transition: all 0.3s;">
+                        Continue as Volunteer →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Organizer Card -->
+        <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-lg hover-card" style="border-radius: 20px; overflow: hidden; transition: all 0.3s;">
+                <div class="card-body text-center p-5">
+                    <div class="mb-4">
+                        <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 10px 30px rgba(0, 123, 255, 0.3);">
+                            <span style="font-size: 3rem;">🏢</span>
+                        </div>
+                    </div>
+
+                    <h3 class="card-title mb-3 fw-bold" style="color: #333;">I'm an Organizer</h3>
+                    <p class="text-muted mb-4" style="font-size: 15px; line-height: 1.6;">
+                        Host events and recruit volunteers for environmental causes.
+                    </p>
+
+                    <ul class="list-unstyled text-start mb-4" style="font-size: 14px;">
+                        <li class="mb-3 d-flex align-items-start">
+                            <span style="color: #007bff; font-size: 20px; margin-right: 10px;">✓</span>
+                            <span style="color: #666;">Create and manage events</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <span style="color: #007bff; font-size: 20px; margin-right: 10px;">✓</span>
+                            <span style="color: #666;">Recruit volunteers</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <span style="color: #007bff; font-size: 20px; margin-right: 10px;">✓</span>
+                            <span style="color: #666;">Track registrations</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <span style="color: #007bff; font-size: 20px; margin-right: 10px;">✓</span>
+                            <span style="color: #666;">Build your organization</span>
+                        </li>
+                    </ul>
+
+                    <a href="{% url 'organizer_google_signup' %}"
+                       class="btn btn-lg w-100"
+                       style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); color: white; font-weight: 600; padding: 14px; border-radius: 12px; border: none; box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4); transition: all 0.3s;">
+                        Continue as Organizer →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.hover-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+.hover-card .btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+}
+</style>
+{% endblock %}

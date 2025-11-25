@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4>⚠️ Delete Event</h4>
+            </div>
+            <div class="card-body">
+                <h5>Are you sure you want to delete this event?</h5>
+                <div class="alert alert-warning">
+                    <strong>Event:</strong> {{ event.title }}<br>
+                    <strong>Date:</strong> {{ event.date|date:"M d, Y" }}<br>
+                    <strong>Registrations:</strong> {{ event.total_registered }} people
+                </div>
+                <p class="text-danger">⚠️ This action cannot be undone!</p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger w-100 mb-2">Yes, Delete Event</button>
+                </form>
+                <a href="{% url 'event_detail' event.id %}" class="btn btn-secondary w-100">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Complete Your Profile - GreenEvents{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0" style="border-radius: 20px;">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #00d084 0%, #00a86b 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 10px 30px rgba(0, 208, 132, 0.3);">
+                            <span style="font-size: 2.5rem;">👥</span>
+                        </div>
+                        <h2 class="fw-bold mb-2" style="color: #333;">Complete Your Volunteer Profile</h2>
+                        <p class="text-muted">Just a few more details to get started, {{ user.first_name }}!</p>
+                    </div>
+
+                    <div class="alert alert-info border-0" style="background: #e7f9f2; color: #00a86b; border-radius: 12px;">
+                        <strong>✓ Email verified:</strong> {{ user.email }}
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" style="color: #444;">
+                                📱 Phone Number <span class="text-muted small">(Optional)</span>
+                            </label>
+                            <input type="tel"
+                                   name="phone"
+                                   class="form-control form-control-lg"
+                                   placeholder="+1 234 567 8900"
+                                   style="border-radius: 10px; border: 2px solid #e0e0e0; padding: 12px 20px;">
+                            <small class="text-muted">Organizers can contact you about events</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" style="color: #444;">
+                                📝 Bio <span class="text-muted small">(Optional)</span>
+                            </label>
+                            <textarea name="bio"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="Tell us about yourself and why you want to volunteer..."
+                                      style="border-radius: 10px; border: 2px solid #e0e0e0; padding: 12px 20px;"></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold" style="color: #444;">
+                                ⭐ Skills & Interests <span class="text-muted small">(Optional)</span>
+                            </label>
+                            <input type="text"
+                                   name="skills"
+                                   class="form-control form-control-lg"
+                                   placeholder="e.g., Gardening, Event Planning, Photography"
+                                   style="border-radius: 10px; border: 2px solid #e0e0e0; padding: 12px 20px;">
+                            <small class="text-muted">Help us match you with relevant events</small>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit"
+                                    class="btn btn-lg"
+                                    style="background: linear-gradient(135deg, #00d084 0%, #00a86b 100%); color: white; font-weight: 600; padding: 14px; border-radius: 12px; border: none; box-shadow: 0 6px 20px rgba(0, 208, 132, 0.4); transition: all 0.3s;">
+                                Complete Signup & Start Volunteering 🌱
+                            </button>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <small class="text-muted">You can update these details later in your profile</small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 208, 132, 0.5) !important;
+}
+
+.form-control:focus {
+    border-color: #00d084 !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 208, 132, 0.25) !important;
+}
+</style>
+{% endblock %}

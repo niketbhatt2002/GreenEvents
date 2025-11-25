@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="text-center mb-5">
+    <h1 class="display-4">🌍 About GreenEvents</h1>
+    <p class="lead">Connecting people with eco-friendly initiatives</p>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3>Our Mission</h3>
+                <p>GreenEvents is dedicated to making it easy for individuals and organizations to participate in environmental conservation activities. We believe that small actions can lead to big changes when communities come together.</p>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3>What We Do</h3>
+                <ul>
+                    <li>Connect volunteers with eco-friendly events</li>
+                    <li>Help organizations promote their green initiatives</li>
+                    <li>Track and celebrate environmental impact</li>
+                    <li>Build a community of environmentally conscious individuals</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3>Event Categories</h3>
+                <div class="row text-center">
+                    <div class="col-md-4 mb-3">
+                        <h1>🌳</h1>
+                        <h6>Tree Planting</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h1>🏖️</h1>
+                        <h6>Beach Cleanups</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h1>♻️</h1>
+                        <h6>Recycling Drives</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h1>🌱</h1>
+                        <h6>Community Gardens</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h1>💻</h1>
+                        <h6>E-Waste Collection</h6>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h1>📚</h1>
+                        <h6>Workshops</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-success text-white text-center">
+            <div class="card-body">
+                <h3>Join Us Today!</h3>
+                <p>Be part of the solution. Start making a difference in your community.</p>
+                <a href="{% url 'signup_choice' %}" class="btn btn-light btn-lg">Get Started</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
