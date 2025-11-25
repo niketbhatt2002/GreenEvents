@@ -1,4 +1,23 @@
-Django==5.2.7
-django-allauth==65.3.0
+# Core Django
+Django>=5.2.7
 django-bootstrap5==24.3
-Pillow==11.0.0
+
+# Django Allauth (Google OAuth)
+django-allauth>=65.3.0
+
+# Allauth dependencies
+requests>=2.31.0
+PyJWT>=2.8.0
+cryptography>=41.0.0
+
+# Bootstrap for Django
+django-bootstrap5>=24.2
+
+# Image handling
+Pillow>=11.0.0
+
+# ASGI support
+asgiref>=3.8.1
+
+# SQL parsing
+sqlparse>=0.5.0
