@@ -850,7 +850,7 @@ def edit_volunteer_profile(request):
     profile = request.user.volunteer_profile
 
     if request.method == 'POST':
-        form = VolunteerProfileForm(request.POST, instance=profile)
+        form = VolunteerProfileForm(request.POST, request.FILES, instance=profile)  # ← ADDED request.FILES
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully!')
@@ -859,7 +859,6 @@ def edit_volunteer_profile(request):
         form = VolunteerProfileForm(instance=profile)
 
     return render(request, 'events/edit_volunteer_profile.html', {'form': form})
-
 
 @login_required
 def edit_organizer_profile(request):
@@ -871,7 +870,7 @@ def edit_organizer_profile(request):
     profile = request.user.organizer_profile
 
     if request.method == 'POST':
-        form = OrganizerProfileForm(request.POST, request.FILES, instance=profile)
+        form = OrganizerProfileForm(request.POST, request.FILES, instance=profile)  # ← ADDED request.FILES
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully!')
