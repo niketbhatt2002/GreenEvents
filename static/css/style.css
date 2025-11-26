@@ -1,16 +1,18 @@
 /* ==========================================
    GREENEVENTS - ULTRA MODERN UI
+   Ocean Blue-Green (Aqua/Teal) Theme
    ========================================== */
 
 /* Import Modern Font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-/* CSS Variables */
+/* CSS Variables - Ocean Blue-Green Palette */
 :root {
-    --green-primary: #00d084;
-    --green-dark: #00a66c;
-    --green-light: #e6fff7;
-    --green-glow: rgba(0, 208, 132, 0.3);
+    --green-primary: #14b8a6;
+    --green-dark: #0d9488;
+    --green-light: #ccfbf1;
+    --green-accent: #5eead4;
+    --green-glow: rgba(20, 184, 166, 0.3);
 
     --gray-50: #f9fafb;
     --gray-100: #f3f4f6;
@@ -121,8 +123,8 @@ body {
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg,
-        rgba(0, 208, 132, 0.95) 0%,
-        rgba(0, 166, 108, 0.95) 100%),
+        rgba(20, 184, 166, 0.95) 0%,
+        rgba(13, 148, 136, 0.95) 100%),
         url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1600&q=80') center/cover;
     color: white;
     text-align: center;
@@ -226,7 +228,7 @@ body {
     left: 0;
     width: 100%;
     height: 4px;
-    background: linear-gradient(90deg, var(--green-primary), var(--green-dark));
+    background: linear-gradient(90deg, var(--green-primary), var(--green-accent));
     transform: scaleX(0);
     transition: transform 0.4s ease;
 }
@@ -311,13 +313,13 @@ body {
 .btn-primary, .btn-success {
     background: linear-gradient(135deg, var(--green-primary), var(--green-dark));
     color: white;
-    box-shadow: 0 4px 14px 0 rgba(0, 208, 132, 0.4);
+    box-shadow: 0 4px 14px 0 rgba(20, 184, 166, 0.4);
 }
 
 .btn-primary:hover, .btn-success:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px 0 rgba(0, 208, 132, 0.5);
-    background: linear-gradient(135deg, var(--green-dark), #008a5a);
+    box-shadow: 0 8px 20px 0 rgba(20, 184, 166, 0.5);
+    background: linear-gradient(135deg, var(--green-dark), #0f766e);
 }
 
 .btn-outline-success {
@@ -330,7 +332,7 @@ body {
     background: var(--green-primary);
     color: white;
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px 0 rgba(0, 208, 132, 0.4);
+    box-shadow: 0 8px 20px 0 rgba(20, 184, 166, 0.4);
 }
 
 .btn-light {
@@ -375,7 +377,7 @@ body {
 .form-control:focus, .form-select:focus {
     border-color: var(--green-primary);
     background: white;
-    box-shadow: 0 0 0 4px rgba(0, 208, 132, 0.1);
+    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1);
     outline: none;
 }
 
@@ -408,7 +410,7 @@ body {
 
 .badge.bg-success {
     background: linear-gradient(135deg, var(--green-primary), var(--green-dark)) !important;
-    box-shadow: 0 2px 8px rgba(0, 208, 132, 0.3);
+    box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);
 }
 
 /* ==========================================
@@ -425,9 +427,9 @@ body {
 }
 
 .alert-success {
-    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
     border-left-color: var(--green-primary);
-    color: #065f46;
+    color: #115e59;
 }
 
 .alert-info {
@@ -498,7 +500,7 @@ body {
 }
 
 .footer a:hover {
-    color: var(--green-primary);
+    color: var(--green-accent);
     transform: translateX(5px);
 }
 
@@ -745,7 +747,7 @@ html {
 .form-group textarea:focus {
     border-color: var(--green-primary);
     background: white;
-    box-shadow: 0 0 0 4px rgba(0, 208, 132, 0.1);
+    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1);
     outline: none;
     transform: translateY(-2px);
 }
@@ -781,7 +783,7 @@ html {
 
 .form-control[type="file"]::file-selector-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 208, 132, 0.3);
+    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
 }
 
 /* Checkbox Styling */
@@ -894,13 +896,5 @@ html {
     margin: 1rem auto;
     display: block;
     border: 4px solid var(--green-primary);
-    box-shadow: 0 4px 12px rgba(0, 208, 132, 0.3);
-}
-
-.image-upload-container {
-    text-align: center;
-    padding: 2rem;
-    background: var(--green-light);
-    border-radius: 1rem;
-    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
 }
